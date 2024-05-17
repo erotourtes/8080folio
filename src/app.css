@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        /* rgb(255, 255, 252) */
+        --color-fg: 255, 255, 252;
+        /* rgb(253, 253, 224) */
+        --color-fg-alt: 253, 253, 224;
+
+        /* rgb(0, 16, 17) */
+        --color-bg: 0 16 17;
+        /* rgb(12, 28, 51) */
+        --color-bg-alt: 12, 28, 51;
+
+        /* rgb(59, 168, 175) */
+        --color-primary: 59, 168, 175;
+        /* rgb(15, 61, 68) */
+        --color-primary-alt: 15, 61, 68;
+        --color-on-primary: var(--fg);
+
+        /* rgb(191, 154, 202) */
+        --color-secondary: 191, 154, 202;
+        /* rgb(138, 95, 140) */
+        --color-secondary-alt: 138, 95, 140;
+        --color-on-secondary: var(--color-fg-alt);
+
+        /* rgb(2, 230, 6) */
+        --color-green-bright: 2, 230, 6;
+        /* rgb(2, 164, 6) */
+        --color-green: 2, 164, 6;
+        /* rgb(1, 97, 3) */
+        --color-green-dark: 1, 97, 3;
+
+        /* rgb(255, 209, 102) */
+        --color-accent: 255, 209, 102;
+
+        /* rgb(255, 0, 0) */
+        --color-destructive: 255, 0, 0;
+        /* rgb(102, 0, 0) */
+        --color-destructive-dark: 102, 0, 0;
+        --color-on-destructive: var(--color-fg);
+
+        /* rgb(68, 77, 85) */
+        --color-muted: 68, 77, 85;
+        --color-on-muted: var(--color-fg);
+    }
+}
