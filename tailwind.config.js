@@ -3,6 +3,10 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      fontFamily: {
+        source: ['Source Code Pro', 'monospace'],
+        researcher: ['Researcher', 'sans-serif'],
+      },
       colors: {
         bg: {
           DEFAULT: 'rgb(var(--color-bg) / <alpha-value>)',

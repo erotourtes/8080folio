@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply font-source;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 @layer base {
     :root {
