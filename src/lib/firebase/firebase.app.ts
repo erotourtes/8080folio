@@ -7,7 +7,7 @@ import {
   type Auth,
 } from 'firebase/auth';
 import type { TUserProfile } from '$lib/types/types';
-import { config } from './config.local';
+import { config } from './config';
 
 const firebaseApp: FirebaseApp = initializeApp(config);
 
