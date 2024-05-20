@@ -1,8 +1,7 @@
 export type TUserProfile = {
-  isNewUser: boolean;
   bio: string;
   email: string | null;
-  githubId: string;
+  githubId: number;
   name: string;
   avatarUrl: string;
   publicReposNumber: number;

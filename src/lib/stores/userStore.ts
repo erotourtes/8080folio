@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { signIn } from '$lib/firebase/firebase.app';
+// import { signIn } from '$lib/firebase/firebase.app';
 import type { TUserProfile } from '$lib/types/types';
 
 const createUserStore = () => {
@@ -7,7 +7,7 @@ const createUserStore = () => {
 
   return {
     subscribe: userStore.subscribe,
-    signIn: () => signIn().then(userStore.set),
+    // signIn: () => signIn().then(userStore.set),
   };
 };
 
