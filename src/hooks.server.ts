@@ -1,8 +1,8 @@
-import { building } from '$app/environment';
 import type { Handle } from '@sveltejs/kit';
-import { COOKIE_SESSION_NAME } from './routes/auth/constants';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import adminApp from '$lib/server/firebase/firebase.admin.app';
+import { COOKIE_SESSION_NAME } from './routes/auth/constants';
+import { building } from '$app/environment';
 
 export const handle: Handle = async ({ event, resolve }) => {
   if (building) {
@@ -13,9 +13,9 @@ export const handle: Handle = async ({ event, resolve }) => {
   const token = event.cookies.get(COOKIE_SESSION_NAME) || '';
   const decodedToken: DecodedIdToken | null = await adminApp
     .auth()
-    .verifySessionCookie(token)
-    .catch((error) => {
-      console.error(error);
+    .verifyIdToken(token)
+    .catch(() => {
+      console.error("Coudn't validate token: ", token);
       return null;
     });
 
