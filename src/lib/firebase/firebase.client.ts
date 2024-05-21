@@ -2,8 +2,11 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, GithubAuthProvider, signInWithPopup, type Auth } from 'firebase/auth';
 import { config } from './config';
 import { refreshToken } from '$lib/api/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseApp: FirebaseApp = initializeApp(config);
+
+export const firebaseDb = getFirestore(firebaseApp);
 
 export const firebaseAuth: Auth = getAuth(firebaseApp);
 const githubProvider = new GithubAuthProvider();

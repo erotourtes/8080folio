@@ -54,10 +54,8 @@ const updateUserData = async ({
     return { html_url, languages_url, collaborators_url, stargazers_count, created_at };
   });
 
-  await reposRef.add({
-    userId: user.uid,
-    repos,
-  });
+  const curUserResposRef = reposRef.doc(user.uid);
+  curUserResposRef.set({ userId: user.uid, repos });
 };
 
 const getGithubUser = async (accessToken: string): Promise<TGithubUser | null> => {

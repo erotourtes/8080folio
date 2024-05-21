@@ -3,7 +3,7 @@
   import { userStore } from '$lib/stores/user';
   import { tick } from 'svelte';
   import { FORM_ACCESS_TOKEN_NAME, FORM_JWT_TOKEN_NAME } from './constants';
-  import { goto, invalidateAll } from '$app/navigation';
+  import { goto } from '$app/navigation';
   import { enhance } from '$app/forms';
 
   let form: HTMLFormElement;
