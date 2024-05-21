@@ -13,9 +13,4 @@ const adminApp = getAdminApp();
 const db = getFirestore();
 export const usersRef = await db.collection('users');
 
-export const test = async () => {
-  const data = (await usersRef.doc('SLxCyho7soIEK79Oen3z').get()).data();
-  console.log(data);
-};
-
 export default adminApp;

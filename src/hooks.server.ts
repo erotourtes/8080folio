@@ -5,7 +5,7 @@ import type { DecodedIdToken } from 'firebase-admin/auth';
 import adminApp from '$lib/server/firebase/firebase.admin.app';
 
 export const handle: Handle = async ({ event, resolve }) => {
-  if (building || event.url.pathname.includes('/auth')) {
+  if (building) {
     event.cookies.delete(COOKIE_SESSION_NAME, { path: '/' });
     return await resolve(event);
   }
