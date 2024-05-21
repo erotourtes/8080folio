@@ -12,5 +12,6 @@ const getAdminApp = () => {
 const adminApp = getAdminApp();
 const db = getFirestore();
 export const usersRef = await db.collection('users');
+export const reposRef = await db.collection('repos');
 
 export default adminApp;
