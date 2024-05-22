@@ -55,7 +55,6 @@ body {
     --color-on-muted: var(--color-fg);
   }
 
-
   h1 {
     @apply text-5xl font-extrabold;
   }
