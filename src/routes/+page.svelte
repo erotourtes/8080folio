@@ -1,10 +1,6 @@
-<script>
-  import { userStore } from '$lib/stores/user';
-</script>
-
-<h1 class="text-3xl text-red-500">Welcome to SvelteKit</h1>
+<h1>Welcome to SvelteKit</h1>
+<h2>Welcome to SvelteKit</h2>
+<h3>Welcome to SvelteKit</h3>
+<h4>Welcome to SvelteKit</h4>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-<a href="/auth" class="my-10 block">Login</a>
-
-{$userStore?.photoURL}
+<p class="font-researcher">Some text</p>
