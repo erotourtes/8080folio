@@ -1,7 +1,13 @@
 import adminApp, { reposRef, usersRef } from '$lib/server/firebase/firebase.admin.app';
 import { error, redirect } from '@sveltejs/kit';
 import { FORM_ACCESS_TOKEN_NAME, FORM_JWT_TOKEN_NAME } from './constants';
-import type { TFirebaseRepo, TFirebaseUser, TGithubRepo, TGithubUser } from '$lib/types/types';
+import type {
+  TFirebaseRepo,
+  TFirebaseUser,
+  TGithubLanguage,
+  TFirebaseContributor,
+} from '$lib/types/types';
+import { Octokit } from '@octokit/rest';
 
 export const actions = {
   signIn: async ({ request }) => {
@@ -33,55 +39,90 @@ const updateUserData = async ({
   const doc = await curUserRef.get();
   if (doc.exists) return;
 
-  const githubData = await getGithubUser(accessToken);
+  const octokit = new Octokit({ auth: accessToken });
+
+  const githubData = await octokit.users.getAuthenticated().catch(handleOcktokitError);
   if (!githubData) throw error(500, 'Can not get github data');
 
-  const { bio, blog, public_repos, total_private_repos, repos_url } = githubData;
-  const firebaseUser: TFirebaseUser = {
+  const {
     bio,
     blog,
     public_repos,
     total_private_repos,
     repos_url,
+    login,
+    name,
+    created_at,
+    html_url,
+  } = githubData.data;
+  const firebaseUser: TFirebaseUser = {
+    bio,
+    blog,
+    username: login,
+    created_at,
+    name,
+    public_repos,
+    total_private_repos,
+    html_url,
+    repos_url,
   };
   await curUserRef.set(firebaseUser);
 
-  const githubRepos = await getGithubRepos({ accessToken, repos_url });
+  const githubRepos = await octokit.repos.listForAuthenticatedUser().catch(handleOcktokitError);
   if (!githubRepos) throw error(500, 'Can not get github repos');
 
-  const repos: TFirebaseRepo[] = githubRepos.map((repo) => {
-    const { languages_url, collaborators_url, stargazers_count, created_at, html_url } = repo;
-    return { html_url, languages_url, collaborators_url, stargazers_count, created_at };
+  const githubLanguages: { [key: string]: TGithubLanguage | null } = {};
+  await Promise.all(
+    githubRepos.data.map(async (repo) => {
+      const language = await octokit.repos
+        .listLanguages({
+          owner: repo.owner.login,
+          repo: repo.name,
+        })
+        .catch(handleOcktokitError);
+      if (!language) return;
+      githubLanguages[repo.languages_url] = language.data;
+    }),
+  );
+
+  const githubContributors: { [key: string]: TFirebaseContributor[] } = {};
+  for (const repo of githubRepos.data) {
+    const contributors = await octokit.repos
+      .listContributors({
+        owner: repo.owner.login,
+        repo: repo.name,
+      })
+      .catch(handleOcktokitError);
+    if (!contributors) continue;
+    githubContributors[repo.url] = contributors.data.map((contributor) => {
+      return {
+        contributions: contributor.contributions,
+        html_url: contributor.html_url || null,
+        login: contributor.login || null,
+        avatar_url: contributor.avatar_url || null,
+      };
+    });
+  }
+
+  const repos: TFirebaseRepo[] = githubRepos.data.map((repo) => {
+    const { stargazers_count, created_at, html_url, forks_count, language } = repo;
+    return {
+      html_url,
+      contributors: githubContributors[repo.url],
+      languages: githubLanguages[repo.languages_url] || null,
+      stargazers_count,
+      created_at,
+      forks_count,
+      language,
+    };
   });
 
   const curUserResposRef = reposRef.doc(user.uid);
   curUserResposRef.set({ userId: user.uid, repos });
 };
 
-const getGithubUser = async (accessToken: string): Promise<TGithubUser | null> => {
-  return await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
-
-const getGithubRepos = async ({
-  accessToken,
-  repos_url,
-}: {
-  accessToken: string;
-  repos_url: string;
-}): Promise<TGithubRepo[] | null> => {
-  return await fetch(repos_url, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleOcktokitError = (error: any) => {
+  console.error(error.status);
+  return null;
 };
