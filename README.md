@@ -11,11 +11,15 @@ pnpm install
 ```
 
 ## Developing
+
 You can run your app with emulators
+
 > To configure which service in emulator view [.example.env.development](./.example.env.development)
+
 ```bash
 docker compose up
 ```
+
 Then start a server
 
 ```bash
