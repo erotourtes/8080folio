@@ -64,6 +64,7 @@ const updateUserData = async ({
       stargazers_count,
       created_at,
       forks_count,
+      tech_stack: [],
       language,
     };
   });

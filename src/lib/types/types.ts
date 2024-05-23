@@ -14,8 +14,9 @@ export type TFirebaseContributor = {
 export type TFirebaseRepo = {
   html_url: string;
   languages: TGithubLanguage | null;
-  contributors: TFirebaseContributor[] | null;
+  contributors: TFirebaseContributor[];
   stargazers_count: number;
+  tech_stack: string[];
   created_at: string | null;
 };
 
