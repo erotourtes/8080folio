@@ -2,6 +2,7 @@ import { type components } from '@octokit/openapi-types';
 
 export type TGithubContributor = components['schemas']['contributor'];
 export type TGithubLanguage = components['schemas']['language'];
+export type TGithubRepo = components['schemas']['repository'];
 
 export type TFirebaseContributor = {
   contributions: number;
