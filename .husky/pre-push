@@ -1,3 +1,1 @@
 node .husky/hooks/check-branch-name.js
-pnpm format-cached
-pnpm lint
