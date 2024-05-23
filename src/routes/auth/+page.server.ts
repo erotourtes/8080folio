@@ -1,4 +1,4 @@
-import adminApp, { reposRef, usersRef } from '$lib/server/firebase/firebase.admin.app';
+import adminApp, { readmeRef, reposRef, usersRef } from '$lib/server/firebase/firebase.admin.app';
 import { error, redirect } from '@sveltejs/kit';
 import { FORM_ACCESS_TOKEN_NAME, FORM_JWT_TOKEN_NAME } from './constants';
 import type {
@@ -55,22 +55,18 @@ const updateUserData = async ({
   const githubContributors: { [key: string]: TFirebaseContributor[] } =
     await getGithubRepoContributors(octokit, githubRepos.data);
 
-  const repos: TFirebaseRepo[] = githubRepos.data.map((repo) => {
-    const { stargazers_count, created_at, html_url, forks_count, language } = repo;
-    return {
-      html_url,
-      contributors: githubContributors[repo.url] || [],
-      languages: githubLanguages[repo.languages_url] || null,
-      stargazers_count,
-      created_at,
-      forks_count,
-      tech_stack: [],
-      language,
-    };
-  });
+  const repos = mapToFirebaseRepoType(githubRepos.data, githubContributors, githubLanguages);
 
-  const curUserResposRef = reposRef.doc(user.uid);
-  curUserResposRef.set({ userId: user.uid, repos });
+  await Promise.all(
+    repos.map(async (repo) => {
+      const addedRepo = await reposRef.add({
+        user_uid: user.uid,
+        ...repo.fire,
+      });
+
+      await saveGithubReadme(octokit, addedRepo, repo.orig);
+    }),
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,25 +75,50 @@ const handleOcktokitError = (error: any) => {
   return null;
 };
 
+function mapToFirebaseRepoType(
+  githubRepos: TGithubRepo[],
+  githubContributors: { [key: string]: TFirebaseContributor[] },
+  githubLanguages: { [key: string]: { [key: string]: number } | null },
+): { orig: TGithubRepo; fire: TFirebaseRepo['repo'] }[] {
+  return githubRepos.map((repo) => {
+    const { stargazers_count, created_at, html_url, forks_count, language } = repo;
+    return {
+      orig: repo,
+      fire: {
+        html_url,
+        contributors: githubContributors[repo.url] || [],
+        languages: githubLanguages[repo.languages_url] || null,
+        stargazers_count,
+        created_at,
+        forks_count,
+        tech_stack: [],
+        language,
+      },
+    };
+  });
+}
+
 async function getGithubRepoContributors(octokit: Octokit, githubRepos: TGithubRepo[]) {
   const githubContributors: { [key: string]: TFirebaseContributor[] } = {};
-  for (const repo of githubRepos) {
-    const contributors = await octokit.repos
-      .listContributors({
-        owner: repo.owner.login,
-        repo: repo.name,
-      })
-      .catch(handleOcktokitError);
-    if (!contributors) continue;
-    githubContributors[repo.url] = contributors.data.map((contributor) => {
-      return {
-        contributions: contributor.contributions,
-        html_url: contributor.html_url || null,
-        login: contributor.login || null,
-        avatar_url: contributor.avatar_url || null,
-      };
-    });
-  }
+  Promise.all(
+    githubRepos.map(async (repo) => {
+      const contributors = await octokit.repos
+        .listContributors({
+          owner: repo.owner.login,
+          repo: repo.name,
+        })
+        .catch(handleOcktokitError);
+      if (!contributors) return;
+      githubContributors[repo.url] = contributors.data.map((contributor) => {
+        return {
+          contributions: contributor.contributions,
+          html_url: contributor.html_url || null,
+          login: contributor.login || null,
+          avatar_url: contributor.avatar_url || null,
+        };
+      });
+    }),
+  );
   return githubContributors;
 }
 
@@ -116,6 +137,19 @@ async function getGithubRepoLanguages(octokit: Octokit, githubRepos: TGithubRepo
     }),
   );
   return githubLanguages;
+}
+
+async function saveGithubReadme(
+  octokit: Octokit,
+  repoId: FirebaseFirestore.DocumentReference,
+  repo: TGithubRepo,
+) {
+  const readme = await octokit.repos
+    .getReadme({ owner: repo.owner.login, repo: repo.name })
+    .catch(handleOcktokitError);
+  const contentBase64 = readme?.data?.content || '';
+  const content = Buffer.from(contentBase64, 'base64').toString('utf8');
+  readmeRef.add({ content, repo_id: repoId.id });
 }
 
 async function saveGithubUser(

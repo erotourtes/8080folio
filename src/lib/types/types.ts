@@ -12,12 +12,15 @@ export type TFirebaseContributor = {
 };
 
 export type TFirebaseRepo = {
-  html_url: string;
-  languages: TGithubLanguage | null;
-  contributors: TFirebaseContributor[];
-  stargazers_count: number;
-  tech_stack: string[];
-  created_at: string | null;
+  user_uid: string;
+  repo: {
+    html_url: string;
+    languages: TGithubLanguage | null;
+    contributors: TFirebaseContributor[];
+    stargazers_count: number;
+    tech_stack: string[];
+    created_at: string | null;
+  };
 };
 
 export type TFirebaseUser = {

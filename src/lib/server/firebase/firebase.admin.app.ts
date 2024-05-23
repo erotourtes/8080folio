@@ -39,5 +39,6 @@ const db = getConfiguredFirestore();
 export const usersRef = await db.collection('users');
 export const reposRef = await db.collection('repos');
 export const techsRef = await db.collection('techs');
+export const readmeRef = await db.collection('readme');
 
 export default adminApp;
