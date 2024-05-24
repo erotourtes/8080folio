@@ -1,14 +1,31 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, GithubAuthProvider, signInWithPopup, type Auth } from 'firebase/auth';
+import {
+  connectAuthEmulator,
+  getAuth,
+  GithubAuthProvider,
+  signInWithPopup,
+  type Auth,
+} from 'firebase/auth';
 import { config } from './config';
 import { refreshToken } from '$lib/api/auth';
-import { getFirestore } from 'firebase/firestore';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import {
+  PUBLIC_FIREBASE_AUTH_EMULATOR_HOST,
+  PUBLIC_FIRESTORE_EMULATOR_HOST,
+  PUBLIC_RUN_EMULATORS,
+} from '$env/static/public';
 
 const firebaseApp: FirebaseApp = initializeApp(config);
 
 export const firebaseDb = getFirestore(firebaseApp);
-
 export const firebaseAuth: Auth = getAuth(firebaseApp);
+
+if (PUBLIC_RUN_EMULATORS === 'true') {
+  if (PUBLIC_FIRESTORE_EMULATOR_HOST) connectFirestoreEmulator(firebaseDb, 'localhost', 8080);
+  if (PUBLIC_FIREBASE_AUTH_EMULATOR_HOST)
+    connectAuthEmulator(firebaseAuth, 'http://localhost:9099', { disableWarnings: true });
+}
+
 const githubProvider = new GithubAuthProvider();
 const scopes = ['read:user'];
 scopes.forEach((scope) => githubProvider.addScope(scope));

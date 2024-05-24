@@ -124,6 +124,15 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Editors
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+
+# IntelliJ
+.idea
+
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged
