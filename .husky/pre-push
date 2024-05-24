@@ -1,3 +1,3 @@
 node .husky/hooks/check-branch-name.js
-pnpm format
-pnpm lint
+node -e "console.log('Running eslint...')"
+pnpm eslint --fix --cache --ext .js,.jsx,.ts,.tsx .
