@@ -17,17 +17,18 @@ To configure which service will be emulated, view [.example.env.development](./.
 
 > [!WARNING]
 > If you emulate Auth service (by defining `PUBLIC_FIREBASE_AUTH_EMULATOR_HOST`)
-> you won't be able to fetch the data from the Github, thus you need to disable it.
+> You won't be able to fetch the data from Github, thus you need to disable it, by setting
+> `PUBLIC_FIREBASE_AUTH_EMULATOR_HOST=""` to an empty string
 
 ```bash
 docker compose up
 ```
 
-You can view emulated firebase console ui on http://localhost:4000/
+You can view the emulated firebase console ui on http://localhost:4000/
 
 ## Development Server
 
-Place `.env` and `.env.development` to the root folder of the project, you can find
+Place `.env` and `.env.development` in the root folder of the project, you can find
 examples of them in the [.example.env](./.example.env) and [.example.development.env](./.example.env.development).
 
 ```bash
