@@ -21,7 +21,10 @@ jobs:
         node-version: '20'
 
     - name: Install dependencies
-      run: npm install
+      run: pnpm install
 
+    - name: Run linters
+      run: pnpm run lint
+    
     - name: Run tests
-      run: npm run test:unit
+      run: pnpm run test:unit
