@@ -8,29 +8,31 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js and pnpm
-      uses: pnpm/action-setup@v3
-      with:
-        version: 8
+      - name: Setup Node.js and pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-    - name: Use Node.js 20
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        cache: 'pnpm'
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Run linters
-      run: pnpm lint
-    
-    - name: Run tests
-      run: pnpm test:unit
+      - name: Run linter
+        run: pnpm lint
+
+      - name: Run formatter
+        run: pnpm prettier --write .
+
+      - name: Run tests
+        run: pnpm test:unit
