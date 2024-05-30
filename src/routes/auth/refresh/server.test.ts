@@ -8,7 +8,7 @@ vi.mock('@sveltejs/kit', () => ({
 
 describe('POST function', () => {
   it('should set the cookie if token is provided', async () => {
-    const mE = {
+    const mockEvent = {
       request: {
         json: vi.fn().mockResolvedValue({
           [COOKIE_SESSION_NAME]: 'test-token',
@@ -20,16 +20,18 @@ describe('POST function', () => {
       },
     };
 
-    const response = await POST(mE);
+    const response = await POST(mockEvent);
 
-    expect(mE.request.json).toHaveBeenCalled();
-    expect(mE.cookies.set).toHaveBeenCalledWith(COOKIE_SESSION_NAME, 'test-token', { path: '/' });
-    expect(mE.cookies.delete).not.toHaveBeenCalled();
+    expect(mockEvent.request.json).toHaveBeenCalled();
+    expect(mockEvent.cookies.set).toHaveBeenCalledWith(COOKIE_SESSION_NAME, 'test-token', {
+      path: '/',
+    });
+    expect(mockEvent.cookies.delete).not.toHaveBeenCalled();
     expect(response).toEqual({ ok: true });
   });
 
   it('should delete the cookie if token is not provided', async () => {
-    const mE = {
+    const mockEvent = {
       request: {
         json: vi.fn().mockResolvedValue({}),
       },
@@ -39,11 +41,11 @@ describe('POST function', () => {
       },
     };
 
-    const response = await POST(mE);
+    const response = await POST(mockEvent);
 
-    expect(mE.request.json).toHaveBeenCalled();
-    expect(mE.cookies.set).not.toHaveBeenCalled();
-    expect(mE.cookies.delete).toHaveBeenCalledWith(COOKIE_SESSION_NAME, { path: '/' });
+    expect(mockEvent.request.json).toHaveBeenCalled();
+    expect(mockEvent.cookies.set).not.toHaveBeenCalled();
+    expect(mockEvent.cookies.delete).toHaveBeenCalledWith(COOKIE_SESSION_NAME, { path: '/' });
     expect(response).toEqual({ ok: true });
   });
 });
