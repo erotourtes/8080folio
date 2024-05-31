@@ -1,9 +1,10 @@
 <script>
   import Step from './Step.svelte';
+  import Footer from './Footer.svelte';
   export let repos;
   export let users;
-  // console.log('repoArray', repos);
-  // console.log('usersArray', users);
+  console.log('repoArray', repos);
+  console.log('usersArray', users);
   console.log('repoArray', repos[0].html_url);
 
   const getLanguages = (repos) => {
@@ -16,7 +17,7 @@
 </script>
 
 <main class="flex flex-1 flex-col p-4">
-  <section id="introPage" class="grid grid-cols-1 gap-10 py-8 sm:py-14 lg:grid-cols-2">
+  <section id="about" class="grid grid-cols-1 gap-10 py-8 sm:py-14 lg:grid-cols-2">
     <div class="flex flex-col gap-6 text-center md:gap-8 lg:justify-center lg:gap-10 lg:text-left">
       <h2 class="text-4xl font-semibold sm:text-5xl md:text-6xl">
         Hi! I'm <span class="poppins text-green-400">{users[0].username}</span>
@@ -41,7 +42,9 @@
         <div
           class="absolute right-full top-0 z-0 h-full w-full bg-green-400 opacity-20 duration-200 group-hover:translate-x-full"
         />
-        <h4 class="z-9 relative">Get in touch &rarr;</h4>
+        <a href="#contact" class="z-9 relative">
+          <h4 class="z-9 relative">Get in touch &rarr;</h4>
+        </a>
       </button>
     </div>
     <div class="relative grid place-items-center shadow-2xl">
@@ -52,7 +55,7 @@
       />
     </div>
   </section>
-  <section class="flex flex-col gap-24 py-20 lg:py-32" id="projects">
+  <section class="flex flex-col gap-24 py-20 lg:py-10" id="projects">
     <div class="flex flex-col gap-2 text-center">
       <h6 class="text-large sm:text-xl md:text-2xl">A few of my creative endeavors.</h6>
       <h3 class="text-3xl font-semibold sm:text-4xl md:text-5xl">
@@ -83,3 +86,4 @@
     </div>
   </section>
 </main>
+<Footer {users} />

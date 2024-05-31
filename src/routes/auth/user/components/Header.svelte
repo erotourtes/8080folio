@@ -2,8 +2,8 @@
   export let y;
 
   export let tabs = [
-    { name: 'Projects ', link: '#projects' },
     { name: 'About me', link: '#about' },
+    { name: 'Projects ', link: '#projects' },
     { name: 'Blog', link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
   ];
 </script>
@@ -31,7 +31,9 @@
       <div
         class="absolute right-full top-0 z-0 h-full w-full bg-green-400 opacity-20 duration-200 group-hover:translate-x-full"
       />
-      <h4 class="z-9 relative">Get in touch</h4>
+      <a href="#contact" class="z-9 relative">
+        <h4 class="z-9 relative">Get in touch &rarr;</h4>
+      </a>
     </button>
   </div>
 </header>
