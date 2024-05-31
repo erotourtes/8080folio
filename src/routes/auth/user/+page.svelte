@@ -11,26 +11,52 @@
     stargazers_count: number;
   }
 
+  interface User {
+    bio: string | null;
+    blog: string;
+    created_at: string;
+    html_url: string;
+    name: string | null;
+    public_repos: number;
+    repos_url: string;
+    total_private_repos: number;
+    username: string;
+  }
+
   export let repos: Repository[] = [];
+  export let users: User[] = [];
   let loading: boolean = true;
 
-  // TO DO: Get data from firestore
-  async function fetchUserData(): Promise<Repository[]> {
+  async function fetchReposData(): Promise<Repository[]> {
     let array: Repository[] = [];
     const querySnapshot = await getDocs(collection(firebaseDb, 'repos'));
     querySnapshot.forEach((doc) => {
       array.push(doc.data() as Repository);
     });
 
-    console.log(`ARRAY LENGTH: ${array.length}`);
+    console.log(`Repos ARRAY LENGTH: ${array.length}`);
+    console.log(array[1]);
+    console.log(typeof array);
+    return array;
+  }
+
+  async function fetchUsersData(): Promise<User[]> {
+    let array: User[] = [];
+    const querySnapshot = await getDocs(collection(firebaseDb, 'users'));
+    querySnapshot.forEach((doc) => {
+      array.push(doc.data() as User);
+    });
+
+    console.log(`Users ARRAY LENGTH: ${array.length}`);
     console.log(array[1]);
     console.log(typeof array);
     return array;
   }
 
   async function loadData() {
-    repos = await fetchUserData();
+    [repos, users] = await Promise.all([fetchReposData(), fetchUsersData()]);
     console.log('Loaded repos:', repos);
+    console.log('Loaded users:', users);
     loading = false;
   }
 
@@ -40,5 +66,5 @@
 {#if loading}
   <p>Loading...</p>
 {:else}
-  <Main {repos} />
+  <Main {repos} {users} />
 {/if}
