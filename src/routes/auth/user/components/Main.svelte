@@ -1,8 +1,10 @@
 <script>
+  import Step from './Step.svelte';
   export let repos;
   export let users;
-  console.log('repoArray', repos);
-  console.log('usersArray', users);
+  // console.log('repoArray', repos);
+  // console.log('usersArray', users);
+  console.log('repoArray', repos[0].html_url);
 
   const getLanguages = (repos) => {
     const languages = repos.map((repo) => repo.language).filter((lang) => lang && lang !== 'Shell');
@@ -48,6 +50,36 @@
         alt="Current User"
         class="z-[2] max-h-[70vh] overflow-hidden rounded-full object-cover"
       />
+    </div>
+  </section>
+  <section class="flex flex-col gap-24 py-20 lg:py-32" id="projects">
+    <div class="flex flex-col gap-2 text-center">
+      <h6 class="text-large sm:text-xl md:text-2xl">A few of my creative endeavors.</h6>
+      <h3 class="text-3xl font-semibold sm:text-4xl md:text-5xl">
+        Curious to <span class="poppins text-green-400">see</span> my work?
+      </h3>
+    </div>
+    <a
+      href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      target="_blank"
+      class="mx-auto -mb-4 -mt-10 flex items-center gap-2 rounded-md border border-solid border-white px-4 py-2 duration-200 hover:border-green-700 sm:-mb-0"
+    >
+      <i class="fa-regular fa-circle-play" />
+      <p>Watch the video</p>
+    </a>
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-10">
+      {#each repos as repo, index}
+        <Step step={repo.html_url}>
+          <p>description</p>
+          <div class="justify-betweeen flex flex-1 items-end gap-4">
+            <div
+              class="relative ml-auto cursor-pointer overflow-hidden duration-200 after:absolute after:right-full after:top-0 after:z-[-1] after:h-0 after:h-full after:w-full after:bg-white after:duration-200 hover:text-slate-950 hover:after:translate-x-full"
+            >
+              <a href={repo.html_url} class="z-4">Go to &rarr;</a>
+            </div>
+          </div>
+        </Step>
+      {/each}
     </div>
   </section>
 </main>
