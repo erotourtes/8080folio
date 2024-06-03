@@ -69,8 +69,7 @@
     </a>
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-10">
       {#each repos as repo, index}
-        <Step step={repo.html_url}>
-          <p>description</p>
+        <Step step={repo}>
           <div class="justify-betweeen flex flex-1 items-end gap-4">
             <div
               class="relative ml-auto cursor-pointer overflow-hidden duration-200 after:absolute after:right-full after:top-0 after:z-[-1] after:h-0 after:h-full after:w-full after:bg-white after:duration-200 hover:text-slate-950 hover:after:translate-x-full"
