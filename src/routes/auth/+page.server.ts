@@ -19,7 +19,7 @@ export const actions = {
 
     await updateUserData({ accessToken, jwtToken });
 
-    throw redirect(303, '/');
+    throw redirect(303, '/auth/user');
   },
 };
 
