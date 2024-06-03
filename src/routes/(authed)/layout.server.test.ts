@@ -20,7 +20,6 @@ describe('load', () => {
     try {
       await load(mockEvent);
     } catch (error) {
-      console.log('Error here');
       expect(error).toHaveProperty('status', 303);
       expect(error).toHaveProperty('location', '/auth');
     }
