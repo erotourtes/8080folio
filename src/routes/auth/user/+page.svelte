@@ -33,10 +33,6 @@
     querySnapshot.forEach((doc) => {
       array.push(doc.data() as Repository);
     });
-
-    console.log(`Repos ARRAY LENGTH: ${array.length}`);
-    console.log(array[1]);
-    console.log(typeof array);
     return array;
   }
 
@@ -46,17 +42,11 @@
     querySnapshot.forEach((doc) => {
       array.push(doc.data() as User);
     });
-
-    console.log(`Users ARRAY LENGTH: ${array.length}`);
-    console.log(array[1]);
-    console.log(typeof array);
     return array;
   }
 
   async function loadData() {
     [repos, users] = await Promise.all([fetchReposData(), fetchUsersData()]);
-    console.log('Loaded repos:', repos);
-    console.log('Loaded users:', users);
     loading = false;
   }
 
