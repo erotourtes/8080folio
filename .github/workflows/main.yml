@@ -17,8 +17,10 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
 
       - name: Get pnpm store directory
         shell: bash
