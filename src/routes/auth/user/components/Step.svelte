@@ -9,7 +9,9 @@
       throw new Error('Invalid GitHub URL');
     }
   }
-  const repoName = getRepositoryName(step);
+  const repoName = getRepositoryName(step.html_url);
+  const dateOnly = step.created_at.slice(0, 10);
+  const languages = Object.keys(step.languages);
 </script>
 
 <div
@@ -23,6 +25,16 @@
     >
       {repoName}
     </h3>
+  </div>
+  {dateOnly}
+  <div class="mt-4 flex flex-wrap justify-center gap-2">
+    {#each languages as language}
+      <span
+        class="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-700"
+      >
+        {language}
+      </span>
+    {/each}
   </div>
   <slot />
 </div>
