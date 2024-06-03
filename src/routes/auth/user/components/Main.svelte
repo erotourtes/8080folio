@@ -3,9 +3,6 @@
   import Footer from './Footer.svelte';
   export let repos;
   export let users;
-  console.log('repoArray', repos);
-  console.log('usersArray', users);
-  console.log('repoArray', repos[0].html_url);
 
   const getLanguages = (repos) => {
     const languages = repos.map((repo) => repo.language).filter((lang) => lang && lang !== 'Shell');
