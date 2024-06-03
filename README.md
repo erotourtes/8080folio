@@ -1,5 +1,17 @@
 # 8080/folio
 
+## [Design Document](https://docs.google.com/document/d/1ALqQY8AvnSiKsYHVTxN4POlIvJdv6yyh-zBOKLeutRM/edit#heading=h.k57aj13un2t)
+
+## Demonstration
+
+For a quick overview and demonstration of the project, watch the video
+
+
+
+https://github.com/erotourtes/8080folio/assets/117169759/66d77c9b-c547-4d19-9946-f45a60b17c29
+
+
+
 ## Get started
 
 ```bash
@@ -34,3 +46,20 @@ examples of them in the [.example.env](./.example.env) and [.example.development
 ```bash
 pnpm dev
 ```
+
+## Features
+
+- **Containerized Application**: Easy setup and deployment using Docker.
+- **GitHub Authentication**: Securely log in using your GitHub account.
+- **Dynamic Portfolio Generation**: Automatically create a portfolio page with your GitHub data.
+- **Modern UI**: A sleek and responsive user interface built with SvelteKit.
+- **Real-time Data**: Fetches the latest data from your GitHub profile.
+
+## Tech Stack
+
+- **Frontend**: SvelteKit
+- **Backend**: Firebase (Authentication and Firestore)
+- **Programming Language**: TypeScript
+- **Containerization**: Docker
+
+
