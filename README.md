@@ -57,8 +57,8 @@ pnpm dev
 
 ## Tech Stack
 
-- **Frontend**: SvelteKit
-- **Backend**: Firebase (Authentication and Firestore)
+- **Frontend**: Svelte
+- **Backend**: Firebase (Authentication and Firestore), SvelteKit
 - **Programming Language**: TypeScript
 - **Containerization**: Docker
 
