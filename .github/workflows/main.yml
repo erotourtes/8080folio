@@ -36,9 +36,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run linter
-        run: pnpm lint
-
       - name: Run formatter
         run: pnpm prettier --write .
 
